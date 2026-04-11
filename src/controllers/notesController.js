@@ -17,7 +17,6 @@ export const getAllNotes = async (req, res, next) => {
     page = parseInt(page);
     perPage = parseInt(perPage);
 
-  
     let query = Note.find();
 
     if (tag) {
@@ -25,14 +24,12 @@ export const getAllNotes = async (req, res, next) => {
     }
 
     if (search) {
-      query = query.find({ $text: { $search: search } });
+      query = query.where({ $text: { $search: search } });
     }
+
     const [totalNotes, notes] = await Promise.all([
       Note.countDocuments(query.getQuery()),
-
-      query
-        .skip((page - 1) * perPage)
-        .limit(perPage),
+      query.skip((page - 1) * perPage).limit(perPage),
     ]);
 
     const totalPages = Math.ceil(totalNotes / perPage);
@@ -70,7 +67,7 @@ export const updateNote = async (req, res, next) => {
     const { noteId } = req.params;
 
     const note = await Note.findByIdAndUpdate(noteId, req.body, {
-      returnDocument: "after", // 🔥 правильна опція
+      returnDocument: "after",
     });
 
     if (!note) {
@@ -93,7 +90,7 @@ export const deleteNote = async (req, res, next) => {
       throw createHttpError(404, "Note not found");
     }
 
-    res.json(note); // 🔥 повертаємо саму нотатку
+    res.json(note);
   } catch (error) {
     next(error);
   }
