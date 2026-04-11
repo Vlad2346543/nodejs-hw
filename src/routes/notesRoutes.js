@@ -3,7 +3,7 @@ import { celebrate } from "celebrate";
 
 import {
   createNote,
-  getNotes,
+  getAllNotes,
   getNoteById,
   updateNote,
   deleteNote,
@@ -18,15 +18,13 @@ import {
 
 const router = express.Router();
 
-router.get("/", celebrate(getAllNotesSchema), getNotes);
+router.get("/notes", celebrate(getAllNotesSchema), getAllNotes);
 
-router.get("/:noteId", celebrate(noteIdSchema), getNoteById);
+router.get("/notes/:noteId", celebrate(noteIdSchema), getNoteById);
 
+router.post("/notes", celebrate(createNoteSchema), createNote);
 
-router.post("/", celebrate(createNoteSchema), createNote);
+router.patch("/notes/:noteId", celebrate(updateNoteSchema), updateNote);
 
-router.patch("/:noteId", celebrate(updateNoteSchema), updateNote);
-
-router.delete("/:noteId", celebrate(noteIdSchema), deleteNote);
-
+router.delete("/notes/:noteId", celebrate(noteIdSchema), deleteNote);
 export default router;

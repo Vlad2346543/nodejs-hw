@@ -1,5 +1,5 @@
+import createHttpError from "http-errors";
 import Note from "../models/note.js";
-
 
 export const createNote = async (req, res, next) => {
   try {
@@ -10,8 +10,7 @@ export const createNote = async (req, res, next) => {
   }
 };
 
-// ✅ GET ALL (pagination + filter + search)
-export const getNotes = async (req, res, next) => {
+export const getAllNotes = async (req, res, next) => {
   try {
     let { page = 1, perPage = 10, tag, search } = req.query;
 
@@ -20,13 +19,8 @@ export const getNotes = async (req, res, next) => {
 
     const filter = {};
 
-    if (tag) {
-      filter.tag = tag;
-    }
-
-    if (search) {
-      filter.$text = { $search: search };
-    }
+    if (tag) filter.tag = tag;
+    if (search) filter.$text = { $search: search };
 
     const totalNotes = await Note.countDocuments(filter);
     const totalPages = Math.ceil(totalNotes / perPage);
@@ -47,7 +41,6 @@ export const getNotes = async (req, res, next) => {
   }
 };
 
-
 export const getNoteById = async (req, res, next) => {
   try {
     const { noteId } = req.params;
@@ -55,7 +48,7 @@ export const getNoteById = async (req, res, next) => {
     const note = await Note.findById(noteId);
 
     if (!note) {
-      return res.status(404).json({ message: "Note not found" });
+      throw createHttpError(404, "Note not found");
     }
 
     res.json(note);
@@ -64,17 +57,16 @@ export const getNoteById = async (req, res, next) => {
   }
 };
 
-
 export const updateNote = async (req, res, next) => {
   try {
     const { noteId } = req.params;
 
     const note = await Note.findByIdAndUpdate(noteId, req.body, {
-      new: true,
+      returnDocument: "after", // 🔥 правильна опція
     });
 
     if (!note) {
-      return res.status(404).json({ message: "Note not found" });
+      throw createHttpError(404, "Note not found");
     }
 
     res.json(note);
@@ -90,10 +82,10 @@ export const deleteNote = async (req, res, next) => {
     const note = await Note.findByIdAndDelete(noteId);
 
     if (!note) {
-      return res.status(404).json({ message: "Note not found" });
+      throw createHttpError(404, "Note not found");
     }
 
-    res.json({ message: "Note deleted" });
+    res.json(note); // 🔥 повертаємо саму нотатку
   } catch (error) {
     next(error);
   }
