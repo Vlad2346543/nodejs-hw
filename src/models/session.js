@@ -24,11 +24,10 @@ const sessionSchema = new mongoose.Schema(
       required: true,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 const Session = mongoose.model("Session", sessionSchema);
 
-export default Session;
+
+export { Session };

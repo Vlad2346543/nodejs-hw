@@ -16,8 +16,14 @@ import {
   updateNoteSchema,
 } from "../validations/notesValidation.js";
 
+import { authenticate } from "../middleware/authenticate.js"; // 🔥 ДОДАЛИ
+
 const router = express.Router();
 
+//  застосовуємо middleware до ВСІХ маршрутів
+router.use(authenticate);
+
+//  тепер всі захищені
 
 router.get("/notes", celebrate(getAllNotesSchema), getAllNotes);
 

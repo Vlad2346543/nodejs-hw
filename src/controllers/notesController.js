@@ -80,12 +80,9 @@ export const updateNote = async (req, res, next) => {
     const { noteId } = req.params;
 
     const note = await Note.findOneAndUpdate(
-      {
-        _id: noteId,
-        userId: req.user._id,
-      },
+      { _id: noteId, userId: req.user._id }, // 🔥 важливо
       req.body,
-      { new: true }
+      { returnDocument: "after" } // ✅ ФІКС
     );
 
     if (!note) {
@@ -98,21 +95,20 @@ export const updateNote = async (req, res, next) => {
   }
 };
 
-//  DELETE
 export const deleteNote = async (req, res, next) => {
   try {
     const { noteId } = req.params;
 
     const note = await Note.findOneAndDelete({
       _id: noteId,
-      userId: req.user._id,
+      userId: req.user._id, // 🔥 важливо
     });
 
     if (!note) {
       throw createHttpError(404, "Note not found");
     }
 
-    res.status(204).send();
+    res.status(200).json(note); // ✅ ФІКС
   } catch (error) {
     next(error);
   }

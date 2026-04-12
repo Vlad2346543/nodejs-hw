@@ -1,5 +1,5 @@
 import express from "express";
-import { celebrate, Segments } from "celebrate";
+import { celebrate} from "celebrate";
 import { refreshUserSession } from "../controllers/authController.js";
 import { logoutUser } from "../controllers/authController.js";
 import {
@@ -14,23 +14,15 @@ import {
 
 const router = express.Router();
 
-router.post("/auth/register", registerUser);
-router.post("/auth/logout", logoutUser);
-router.post("/auth/refresh", refreshUserSession);
-router.post(
-  "/auth/register",
-  celebrate({
-    [Segments.BODY]: registerUserSchema,
-  }),
-  registerUser
-);
+router.post("/auth/register", celebrate(registerUserSchema), registerUser);
 
-router.post(
-  "/auth/login",
-  celebrate({
-    [Segments.BODY]: loginUserSchema,
-  }),
-  loginUser
-);
+//  login
+router.post("/auth/login", celebrate(loginUserSchema), loginUser);
+
+//  logout
+router.post("/auth/logout", logoutUser);
+
+//  refresh
+router.post("/auth/refresh", refreshUserSession);
 
 export default router;

@@ -1,6 +1,6 @@
 import createHttpError from "http-errors";
 import bcrypt from "bcrypt";
-import Session from "../models/session.js";
+import { Session } from "../models/session.js";
 import User from "../models/user.js";
 import { createSession, setSessionCookies } from "../services/auth.js";
 
