@@ -1,10 +1,10 @@
 import { Joi, Segments } from "celebrate";
 
-//  REGISTER
+// ✅ REGISTER
 export const registerUserSchema = {
   [Segments.BODY]: Joi.object({
     email: Joi.string().email().required(),
-    password: Joi.string().min(8).required(), // 🔥 8
+    password: Joi.string().min(8).required(), 
   }),
 };
 
@@ -12,6 +12,6 @@ export const registerUserSchema = {
 export const loginUserSchema = {
   [Segments.BODY]: Joi.object({
     email: Joi.string().email().required(),
-    password: Joi.string().required(), // 🔥 БЕЗ min
+    password: Joi.string().required(), 
   }),
 };
