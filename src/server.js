@@ -10,6 +10,8 @@ import { errors } from "celebrate";
 
 import notesRouter from "./routes/notesRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+
 
 import cookieParser from "cookie-parser";
 
@@ -28,7 +30,7 @@ app.use(cors());
 // ✅ ВАЖЛИВО
 app.use(authRoutes);
 app.use(notesRouter);
-
+app.use(userRoutes);
 app.use(notFoundHandler);
 app.use(errors());
 app.use(errorHandler);

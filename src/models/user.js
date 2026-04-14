@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
+    avatar: {
+    type: String,
+    default: "https://ac.goit.global/fullstack/react/default-avatar.jpg",
+    },
+
     username: {
       type: String,
       trim: true,
