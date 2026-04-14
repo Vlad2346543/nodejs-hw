@@ -1,16 +1,11 @@
-import { Joi, Segments } from "celebrate";
+import {Joi} from "joi";
+import { Segments } from "celebrate";
 
 // ✅ REGISTER
 export const registerUserSchema = {
   [Segments.BODY]: Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required(), 
-  }),
-};
-
-export const requestResetEmailSchema = {
-  body: Joi.object({
-    email: Joi.string().email().required(),
   }),
 };
 
@@ -22,9 +17,15 @@ export const loginUserSchema = {
   }),
 };
 
+export const requestResetEmailSchema = {
+  [Segments.BODY]: Joi.object({
+    email: Joi.string().email().required(),
+  }),
+};
+
 export const resetPasswordSchema = {
-  body: Joi.object({
-    password: Joi.string().required(),
+  [Segments.BODY]: Joi.object({
+    password: Joi.string().min(8).required(), // 🔥 ось це виправлення
     token: Joi.string().required(),
   }),
 };

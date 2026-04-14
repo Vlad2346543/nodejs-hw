@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendEmail = async ({ to, subject, html }) => {
-  await transporter.sendMail({
+  return transporter.sendMail({
     from: `"NoReply" <${process.env.SMTP_USER}>`,
     to,
     subject,

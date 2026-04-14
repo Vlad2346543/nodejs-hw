@@ -9,7 +9,6 @@ import path from "path";
 import handlebars from "handlebars";
 import { sendEmail } from "../utils/sendMail.js";
 
-
 //  REGISTER
 export const registerUser = async (req, res, next) => {
   try {
@@ -156,8 +155,8 @@ export const requestResetEmail = async (req, res, next) => {
       link: resetLink,
     });
 
-    // 📧 відправка
     await sendEmail({
+      from: process.env.SMTP_FROM,
       to: user.email,
       subject: "Reset password",
       html,
